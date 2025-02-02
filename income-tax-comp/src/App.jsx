@@ -21,6 +21,13 @@ function App() {
     console.log("Calculating Tax - Old")
     
     setTaxCalculated(true)
+
+    const earnedOld = OldTaxCalculation(earnedAmount, false);
+    const dividendOld = OldTaxCalculation(dividendAmount, true);
+
+    const combinedNew = NewTaxCalculation(earnedAmount, dividendAmount);
+
+    console.log({ earnedOld, dividendOld, combinedNew });
   }
 
   return (
@@ -29,11 +36,11 @@ function App() {
         <form onSubmit={calculateTax}>
           <div>
             <label htmlFor="earned-amount">Amount Earned (ex Dividends)</label>
-            <input type="number" name="earned-amount" />
+            <input type="number" name="earned-amount" onChange={(e) => setEarnedAmount(e.target.value)} />
           </div>
           <div>
             <label htmlFor="dividends-amount">Amount via Dividends</label>
-            <input type="number" name="dividends-amount" />
+            <input type="number" name="dividends-amount" onChange={(e) => setDividendAmout(e.target.value)}/>
           </div>
           <button type="submit">Calculate</button>
         </form>
