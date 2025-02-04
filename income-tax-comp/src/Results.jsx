@@ -4,14 +4,14 @@ function Results({entries, tableHeader})
         <tr key={v.key}>
             <td>{v.display}</td>
             <td>{v.percent * 100}%</td>
-            <td>{v.taxPaid}</td>
+            <td>£{v.taxPaid.toFixed(2)}</td>
         </tr>
     ))
     const totalTax = entries.reduce((n, {taxPaid}) => n + taxPaid, 0)
 
     if (rows.length == 0){
-        rows.push(<tr key={"emptyRow"} colSpan="3">
-            <td>No tax details...</td>
+        rows.push(<tr key={"emptyRow"}>
+            <td colSpan="3">No tax details...</td>
         </tr>)
     }
 
@@ -34,7 +34,7 @@ function Results({entries, tableHeader})
             <tfoot>
                 <tr>
                     <td colSpan="2">Total Tax Paid</td>
-                    <td>{totalTax}</td>
+                    <td>£{totalTax.toFixed(2)}</td>
                 </tr>
             </tfoot>
         </table>

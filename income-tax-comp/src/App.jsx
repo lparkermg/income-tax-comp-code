@@ -49,11 +49,17 @@ function App() {
         <form onSubmit={calculateTax} onReset={resetDetails} className="card-full">
           <div className="card-item" title="This is your salary earned on a yearly basis.">
             <label htmlFor="earned-amount">Active Income</label>
-            <input type="number" name="earned-amount" min="0" onChange={(e) => setEarnedAmount(Number(e.target.value))}/>
+            <div className="input-control">
+              <span>£</span>
+              <input type="number" name="earned-amount" min="0" onChange={(e) => setEarnedAmount(Number(e.target.value))}/>
+            </div>
           </div>
           <div className="card-item" title="This is what you received in dividends on a yearly basis.">
             <label htmlFor="dividends-amount">Dividend Income</label>
-            <input type="number" name="dividends-amount" min="0" onChange={(e) => setDividendAmout(Number(e.target.value))}/>
+            <div className="input-control">
+              <span>£</span>
+              <input type="number" name="dividends-amount" min="0" onChange={(e) => setDividendAmout(Number(e.target.value))}/>
+            </div>
           </div>
           <button type="submit">Calculate</button>
           <button type="reset" className="btn-clear">Reset</button>
