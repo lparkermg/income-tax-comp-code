@@ -25,7 +25,6 @@ a:hover {
 body {
   margin: 0;
   display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
 }
@@ -45,13 +44,38 @@ button {
   background-color: #1a1a1a;
   cursor: pointer;
   transition: border-color 0.25s;
+  margin-right: 0.25em;
 }
+
+p { 
+  word-break: break-all
+}
+
 button:hover {
   border-color: #646cff;
 }
+
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+input {
+  border-radius: 6px;
+  border: 1px solid transparent;
+  padding: 0.6em 1em;
+  font-size: 1em;
+  font-weight: 500;
+  font-family: inherit;
+  transition: border-color 0.25s;
+}
+
+input:hover {
+  border-color:#535bf2;
+}
+
+input:invalid{
+  border-color:red;
 }
 
 @media (prefers-color-scheme: light) {
