@@ -91,57 +91,29 @@ export function OldTaxCalculation(ae, isDividends){
     return amounts;
 }
 
-export function NewTaxCalculation(ae){
+export function OldCapitalGainsCalculation(ae){
     const bands = [];
 
     bands.push({
-        key: "ntpa",
+        key: "cgpa",
         display: "Personal Allowance",
         percent: 0,
         from: 0,
-        to: 20000,
+        to: 3000,
     });
     bands.push({
-        key: "nt25",
-        display: "25%",
-        percent: 0.25,
-        from: 20000,
-        to: 40000
+        key: "cgbr",
+        display: "Basic Rate",
+        percent: 0.18,
+        from: 3000,
+        to: 50270
     });
     bands.push({
-        key: "nt30",
-        display: "30%",
-        percent: 0.3,
-        from:40000,
-        to: 60000,
-    })
-    bands.push({
-        key: "nt35",
-        display: "35%",
-        percent: 0.35,
-        from: 60000,
-        to: 80000
+        key: "cghr",
+        display: "Higher Rate",
+        percent: 0.24,
+        from:50270,
     });
-    bands.push({
-        key: "nt40",
-        display: "40%",
-        percent: 0.4,
-        from: 80000,
-        to: 100000
-    });
-    bands.push({
-        key: "nt45",
-        display: "45%",
-        percent: 0.45,
-        from:100000,
-        to: 120000
-    })
-    bands.push({
-        key: "nt50",
-        display: "50%",
-        percent: 0.5,
-        from: 120000,
-    })
 
     const amounts = [];
     bands.forEach(v => {
@@ -158,6 +130,71 @@ export function NewTaxCalculation(ae){
             else
             {
                 amount = ae - v.from 
+            }
+
+            taxPaid = amount * v.percent;
+
+            amounts.push({
+                key: v.key,
+                display: v.display,
+                percent: v.percent,
+                taxPaid,
+            })
+        }
+    })
+
+    return amounts;
+}
+
+// TODO: Change this up to allow more flexibility in changes and building up the bands.
+// This will come at the cost of having specific display labels?
+export function NewTaxCalculation(pa, ae, amountOfSteps, increasePerStep, percentStart, percentStepIncrease){
+    const bands = [];
+    
+    bands.push({
+        key: "ntpa",
+        display: "Personal Allowance",
+        percent: 0,
+        from: 0,
+        to: pa,
+    });
+
+    var currentStep = 0;
+    var currentFromAmount = pa;
+    var currentPercent = percentStart
+    while(currentStep < amountOfSteps){
+        var nextTo = null;
+        if(amountOfSteps - 1 > currentStep){
+            nextTo = currentFromAmount + increasePerStep
+        }
+        bands.push({
+            key: "nt" + (currentPercent * 100).toFixed(2).toString(),
+            display: `${Number.parseFloat((currentPercent * 100).toFixed(2))}%`,
+            percent: currentPercent,
+            from: currentFromAmount,
+            to: nextTo,
+        });
+
+        currentPercent = currentPercent + percentStepIncrease;
+        currentFromAmount = currentFromAmount + increasePerStep;
+        currentStep = currentStep + 1
+    }
+
+    const amounts = [];
+    bands.forEach(v => {
+        // the amount earned is greater than the from value.
+        var taxPaid = 0
+        if(ae > v.from)
+        {
+            var amount = 0
+            if(v.to && v.to <= ae)
+            {
+                // taxing the full amount of the band.
+                amount = v.to - v.from
+            }
+            else
+            {
+                amount = ae - v.from
             }
 
             taxPaid = amount * v.percent;

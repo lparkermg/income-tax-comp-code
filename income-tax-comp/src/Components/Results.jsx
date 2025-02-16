@@ -3,7 +3,7 @@ function Results({entries, tableHeader})
     const rows = entries.map((v) => (
         <tr key={v.key}>
             <td>{v.display}</td>
-            <td>{v.percent * 100}%</td>
+            <td>{`${Number.parseFloat((v.percent * 100).toFixed(2))}%`}</td>
             <td>£{v.taxPaid.toFixed(2)}</td>
         </tr>
     ))
